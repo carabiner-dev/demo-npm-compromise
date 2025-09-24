@@ -44,14 +44,19 @@ We have written an example
 
 Let's go though each step in deep to understand how verification works.
 
-### Verify the Project
+## Requirements to Verify the Project
+
+> [!IMPORTANT]
+> As hown in the [README TL;DR](README.md), all of these requirements can be
+> handled automatically by AMPEL or are already embedded in the PolicySet code.
+> We are generating them here to show how everything works internally :)
 
 For this tutorial, we will use the
 [v1.0 release](https://github.com/carabiner-dev/demo-npm-compromise/releases/tag/v1.0)
 of this repository. If you have an npm project, you can use yours by following
 the instructions in each step.
 
-#### It All Starts With The SBOM
+### It All Starts With The SBOM
 
 The SBOM is the main and only required attestation to run the `oss-rebuild`
 PolicySet.
@@ -62,7 +67,7 @@ that lets AMPEL mutate the original subject under verification to apply the
 policy to another artifact securely linked through attested data, in this
 case each of the project's dependencies.
 
-##### How Subject Chaining Works
+#### How Subject Chaining Works
 
 From the SBOM data, the PolicySet selectors will extract all packages and
 synthesize new _subjects_, that is new artifacts that will be chained to the
@@ -75,7 +80,7 @@ Once the PolicySet computes its chain, its policies will be applied to each new
 subject. The computed evidence chain is preserved and is recorded in the resulting
 ResultSet in case it is needed to check the results or perform an audit.
 
-##### Generate the SBOM
+#### Generate the SBOM
 
 For the example repo here, you can use the signed SPDX SBOM published in the
 releases. If you want to generate the SBOM for your own npm project, run the
@@ -86,13 +91,13 @@ npm install
 npm sbom --sbom-format=spdx > myproject.spdx.json
 ```
 
-#### Determining Which Packages to Check
+### Determining Which Packages to Check
 
 Google OSS Rebuild does not have attestations for all npm packages. This means
 that we need to fail the policy only for those packages that _should_ have data
 but don't have an attestation or there is a mismatch with the rebuild predicate.
 
-##### Generate the Pacakge List
+#### Generate the Pacakge List
 
 To tell the policy which packages it should check, we need to pass AMPEL an
 inventory of the packages being rebuilt by OSS Rebuild. We will build it by
@@ -114,8 +119,9 @@ for n in $(gsutil ls gs://google-rebuild-attestations/npm/ | awk -F / '{print $(
 done | jq -Rs '{packages: split("\n") | map(select(length > 0))}' > packages.json
 ```
 
-We also have this bash code
-[published in a script](https://github.com/carabiner-dev/examples/blob/main/oss-rebuild/build-context.sh) you can download and run.
+We also published this bash code
+[in a script](https://github.com/carabiner-dev/examples/blob/main/oss-rebuild/build-context.sh)
+you can just download and run.
 
 This command extracts all the package names for which OSS Rebuild has published
 attestations. We will use this data to tell AMPEL which packages it needs to
@@ -125,7 +131,7 @@ look at.
 > The PolicySet we've published embeds the list. Generating it yourself means the
 > package list will include the latest rebuilt packages.
 
-##### Passing Contextual Data to AMPEL
+#### Passing Contextual Data to AMPEL
 
 AMPEL can read contextual data from various sources. You can pass values with
 the `-x` flag, through environment variables or specifying it in a JSON file. We
@@ -136,7 +142,7 @@ Alternatively, you can also "bake" the contextual data in the policy code
 [PolicySet context code](https://github.com/carabiner-dev/examples/blob/645bad3901e8f5817f8b93b816be0625619c85c7/oss-rebuild/policyset.ampel.json#L7)),
 this has the added benefit of making it immutable when you sign the policy file.
 
-##### Verifying Google's SLSA Attestations
+### Verifying Google's SLSA Attestations
 
 The attestations published by google's OSS Rebuild project are signed with a
 fixed key and in an DSSE envelope. We need to supply AMPEL the key to check
@@ -148,10 +154,11 @@ run the verifier:
 https://github.com/carabiner-dev/examples/blob/main/oss-rebuild/rebuild.key
 
 > [!NOTE]
-> The PolicySet we've published embeds the key identity. We are showing how
-> to use the file for illustration purposes.
+> The PolicySet we've published already 
+> [embeds the key identity](https://github.com/carabiner-dev/examples/blob/645bad3901e8f5817f8b93b816be0625619c85c7/oss-rebuild/policyset.ampel.json#L111-L114).
+> We are showing how to use the file for illustration purposes.
 
-#### Run the Project Verification
+## Run the Project Verification
 
 Now that we have the SBOM data and the contextual data definition, we can run
 the policy. Assuming you are checking v1.0 of this project, execute the following
@@ -219,7 +226,7 @@ attestation from OSS Rebuild:
 +----------------------------------+------------------+--------+----------------------------------------------------------+
 ```
 
-#### The Verifier Flags
+### The Verifier Flags
 
 If you read through the quick intro in the [README](README.md), you'll notice
 two main differences, this example uses `--attestation` and `--context-json`.
@@ -230,17 +237,19 @@ Specifying attestations with `-a|--attestation` avoids using a collector and
 also allows you to specify unsigned statements you want to associate with the
 subject under verification (such as the unsigned SBOM in this example).
 
-The we use `--context-json` to pass the contextual data generated from Google's
+Then we use `--context-json` to pass the contextual data generated from Google's
 bucket. The flag takes a string of JSON data to use as context or, as in this
 example, you can prefix it prefixing it with @ to signal AMPEL it should read the
 data from a file instead of parsing the string as JSON.
+
+Finally, we use `-key` to pass AMPEL the public key to verify Google's attestations.
 
 > [!IMPORTANT]
 > While the policy set includes the package list embedded in it, it is used
 > as a `default`. When you specify fresher data in the command line, it
 > overrides the PolicySet's default.
 
-### White Listing Packages
+## White Listing Packages
 
 Unfortunately, not all packages are reproducible and some versions are missing
 in the OSS Rebuild repo. If you are using a package which you know is safe but
