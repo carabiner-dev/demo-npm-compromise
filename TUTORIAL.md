@@ -5,12 +5,18 @@
 > with details on how the OSS Rebuildexample is structured. Start there if
 > you want a shorter version.
 
-This tutorial show various key concepts of the AMPEL policy engine applied
-to a practical case: verifying npm packages using Google's[^1] 
+This tutorial runs manually through each step required to run the TL;DR
+in the README but instead of relying on AMPEL's capabilities and the data
+published in the PolicySet, we generate everything by hand.
+
+The goal is to show various key concepts of the AMPEL policy engine applied
+to a practical case: verifying npm packages using Google's[^1]
 [OSS Rebuild](https://github.com/google/oss-rebuild) attestations.
 
 [^1]: Carabiner Systems is in no way affiliated with Google Inc. This project
 only uses publicly available data.
+
+We hope you have fun! 🥳
 
 ## Running this Tutorial
 
@@ -130,6 +136,21 @@ Alternatively, you can also "bake" the contextual data in the policy code
 [PolicySet context code](https://github.com/carabiner-dev/examples/blob/645bad3901e8f5817f8b93b816be0625619c85c7/oss-rebuild/policyset.ampel.json#L7)),
 this has the added benefit of making it immutable when you sign the policy file.
 
+##### Verifying Google's SLSA Attestations
+
+The attestations published by google's OSS Rebuild project are signed with a
+fixed key and in an DSSE envelope. We need to supply AMPEL the key to check
+the signatures.
+
+Download the key from the examples repository, we'll feed it to AMPEL when we
+run the verifier:
+
+https://github.com/carabiner-dev/examples/blob/main/oss-rebuild/rebuild.key
+
+> [!NOTE]
+> The PolicySet we've published embeds the key identity. We are showing how
+> to use the file for illustration purposes.
+
 #### Run the Project Verification
 
 Now that we have the SBOM data and the contextual data definition, we can run
@@ -144,7 +165,8 @@ ampel verify sha1:9b890a2457318c91ae5ed9451a4da74a092db084 \
     --policy "git+https://github.com/carabiner-dev/examples#oss-rebuild/policyset.ampel.json" \
     --attestation colortask-v1.0.spdx.json \
     --context-json=@packages.json \
-    --collector ossrebuild:
+    --collector ossrebuild: \
+    --key rebuild.key
 ```
 
 Running this on this repo's v1.0 SBOM should show something like this:
@@ -176,7 +198,8 @@ ampel verify sha1:9986a7e5b0b666e4c792f1339bfb9098c4ef8aef \
     --policy "git+https://github.com/carabiner-dev/examples#oss-rebuild/policyset.ampel.json" \
     --attestation colortask-v1.1.spdx.json \
     --context-json=@packages.json \
-    --collector ossrebuild:  
+    --collector ossrebuild: \
+    --key rebuild.key
 ```
 
 This should verify the project as AMPEL fetches and verifies the signed build
@@ -264,3 +287,13 @@ ampel verify sha1:9b890a2457318c91ae5ed9451a4da74a092db084 \
 You can also add the package list to the json file or, better yet, write your
 own PolicySet referencing the original and signing it to "bake" the packages in
 the signed code.
+
+## Conclusion
+
+You probaly noticed that this example more flags and files as the TLDR in the
+README. We wanted to illustrate how the data packed in the policy code, AMPEL's
+capabilities to eftch and verify data allow for simpler verification scenarios.
+
+In the short version, you don't need to worry about downloading data, managing
+public keys, generating contextual information. Everything is handled by AMPEL
+automatically or packed in the PolicySet code.

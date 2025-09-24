@@ -1,4 +1,4 @@
-# Compromised NPM Package Example
+# Example: OSS Rebuild vs Compromised NPM Packages
 
 ⚠️ __THIS CODE IS A SECURITY EXAMPLE. NOT FOR GENERAL USE__ ⚠️
 
@@ -18,6 +18,12 @@ The [OSS Rebuild project](https://github.com/google/oss-rebuild) tries to reprod
 the builds of popular packages published in various language ecosystems. By
 reproducing an exact copy of the pacakge, you have certainty that the published
 version in the package registry was built from the unmodified public source.
+
+Carabiner has published a
+[PolicySet](https://github.com/carabiner-dev/examples/blob/main/oss-rebuild/policyset.ampel.json)
+and supportiing files for this tutorial. Find them in our examples repository:
+
+https://github.com/carabiner-dev/examples/tree/main/oss-rebuild
 
 ## The Sample App Code
 
