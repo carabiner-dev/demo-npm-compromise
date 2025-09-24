@@ -49,7 +49,7 @@ attestation published for that version of the module:
 ```bash
 ampel verify sha1:9b890a2457318c91ae5ed9451a4da74a092db084 \
     --policy "git+https://github.com/carabiner-dev/examples#oss-rebuild/policyset.ampel.json" \
-    --collector release:carabiner-dev/examples-colortask@v1.0 \
+    --collector release:carabiner-dev/demo-npm-compromise@v1.0 \
     --collector ossrebuild: 
 ```
 
@@ -81,7 +81,7 @@ Now, let's verify v1.1 which bumps Chalk to v5.6.2 which is malware-free:
 ```bash
 ampel verify sha1:9986a7e5b0b666e4c792f1339bfb9098c4ef8aef \
     -p "git+https://github.com/carabiner-dev/examples#oss-rebuild/policyset.ampel.json" \
-    -c release:carabiner-dev/examples-colortask@v1.1 \
+    -c release:carabiner-dev/demo-npm-compromise@v1.1 \
     -c ossrebuild: 
 ```
 
@@ -98,4 +98,4 @@ including how AMPEL extracts data from the SBOM, fetches and verifies the
 attestation sigantures and incorporates contextual data, follow up to the full
 tutorial:
 
-OSS Rebuild Deep Dive → 
+[OSS Rebuild Deep Dive](TUTORIAL.md) →

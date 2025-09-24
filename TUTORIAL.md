@@ -41,7 +41,7 @@ Let's go though each step in deep to understand how verification works.
 ### Verify the Project
 
 For this tutorial, we will use the
-[v1.0 release](https://github.com/carabiner-dev/examples-colortask/releases/tag/v1.0)
+[v1.0 release](https://github.com/carabiner-dev/demo-npm-compromise/releases/tag/v1.0)
 of this repository. If you have an npm project, you can use yours by following
 the instructions in each step.
 
@@ -138,7 +138,7 @@ command:
 
 ```bash
 # Use your own SBOM or download the v1.0 SBOM from this repo:
-curl -L https://github.com/carabiner-dev/examples-colortask/releases/download/v1.1/colortask-v1.0.spdx.json > colortask-v1.0.spdx.json
+curl -L https://github.com/carabiner-dev/demo-npm-compromise/releases/download/v1.1/colortask-v1.0.spdx.json > colortask-v1.0.spdx.json
 
 ampel verify sha1:9b890a2457318c91ae5ed9451a4da74a092db084 \
     --policy "git+https://github.com/carabiner-dev/examples#oss-rebuild/policyset.ampel.json" \
@@ -170,7 +170,7 @@ time using the v1.1 version:
 
 ```bash
 # Use your own SBOM or download v1.1 from this repo:
-curl -L https://github.com/carabiner-dev/examples-colortask/releases/download/v1.1/colortask-v1.1.spdx.json > colortask-v1.1.spdx.json
+curl -L https://github.com/carabiner-dev/demo-npm-compromise/releases/download/v1.1/colortask-v1.1.spdx.json > colortask-v1.1.spdx.json
 
 ampel verify sha1:9986a7e5b0b666e4c792f1339bfb9098c4ef8aef \
     --policy "git+https://github.com/carabiner-dev/examples#oss-rebuild/policyset.ampel.json" \
