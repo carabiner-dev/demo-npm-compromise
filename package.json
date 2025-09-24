@@ -1,0 +1,43 @@
+{
+  "name": "colortask",
+  "version": "1.0.0",
+  "description": "A colorful command-line task manager with chalk styling",
+  "main": "colortask.js",
+  "type": "module",
+  "bin": {
+    "taskman": "./colortask.js"
+  },
+  "scripts": {
+    "start": "node colortask.js",
+    "dev": "node colortask.js",
+    "install-global": "npm install -g .",
+    "test": "node -e \"console.log('Task Manager CLI is ready!')\"",
+    "lint": "echo 'No linting configured yet'"
+  },
+  "keywords": [
+    "task-manager",
+    "cli",
+    "productivity",
+    "chalk",
+    "terminal",
+    "todo"
+  ],
+  "author": "Carabiner Engineering <eng@carabiner.dev>",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^5.6.0"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/carabiner-dev/examples-colortask.git"
+  },
+  "bugs": {
+    "url": "https://github.com/carabiner-dev/examples-colortask/issues"
+  },
+  "homepage": "https://github.com/carabiner-dev/examples-colortask"
+}
