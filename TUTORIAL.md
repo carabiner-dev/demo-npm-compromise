@@ -2,7 +2,7 @@
 
 > [!NOTE]
 > This document expands on the short instructions in the [README](README.md)
-> with details on how the OSS Rebuildexample is structured. Start there if
+> with details on how the OSS Rebuild example is structured. Start there if
 > you want a shorter version.
 
 This tutorial runs manually through each step required to run the TL;DR
@@ -42,12 +42,12 @@ We have written an example
 1. Verifies each of the policy's tenets against each dependency.
 1. Finally assembles a result set and asserts the PolicySet.
 
-Let's go though each step in deep to understand how verification works.
+Let's go though each step in depth to understand how verification works.
 
 ## Requirements to Verify the Project
 
 > [!IMPORTANT]
-> As hown in the [README TL;DR](README.md), all of these requirements can be
+> As shown in the [README TL;DR](README.md), all of these requirements can be
 > handled automatically by AMPEL or are already embedded in the PolicySet code.
 > We are generating them here to show how everything works internally :)
 
@@ -299,9 +299,9 @@ the signed code.
 
 ## Conclusion
 
-You probaly noticed that this example more flags and files as the TLDR in the
+You probaly noticed that this example uses more flags and files than the TLDR in the
 README. We wanted to illustrate how the data packed in the policy code, AMPEL's
-capabilities to eftch and verify data allow for simpler verification scenarios.
+capabilities to fetch and verify data allow for simpler verification scenarios.
 
 In the short version, you don't need to worry about downloading data, managing
 public keys, generating contextual information. Everything is handled by AMPEL
